@@ -6,7 +6,7 @@
 class sfWidgetFormSchemaFormatterTwitterBootstrap extends sfWidgetFormSchemaFormatter
 {
     protected
-    $rowFormat              = "%error%%label%\n  <div class=\"controls\">%field%%help%\n%hidden_fields%</div>\n",
+    $rowFormat              = "<div class=\"control-group%if_error_class%\">%label%%error%\n  <div class=\"controls\">%field%%help%\n%hidden_fields%</div></div>\n",
     $errorRowFormat         = "%errors%", // "<div class=\"alert-message error\">\n%errors%</div>\n",
     $errorListFormatInARow  = "%errors%", // "  <div class=\"alert-message error\">\n%errors% </div>\n",
     $errorRowFormatInARow   = "<span class=\"help-block error-block\">%error%</span>", // "    <p>%error%</p>\n",
@@ -56,5 +56,12 @@ class sfWidgetFormSchemaFormatterTwitterBootstrap extends sfWidgetFormSchemaForm
     public function setValidatorSchema(sfValidatorSchema $validatorSchema)
     {
         $this->validatorSchema = $validatorSchema;
+    }
+
+    public function formatRow($label, $field, $errors = array(), $help = '', $hiddenFields = null)
+    {
+        $str = parent::formatRow($label, $field, $errors, $help, $hiddenFields);
+
+        return str_replace('%if_error_class%', $errors ? ' error' : '', $str);
     }
 }
